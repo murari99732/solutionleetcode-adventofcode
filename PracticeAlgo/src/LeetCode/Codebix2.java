@@ -154,7 +154,72 @@ public class Codebix2 {
 		}
 	}
 
+	static void smallestcountofmatchingpattern(String pattern, String ans) {
+		HashMap<Character, Integer> hasmap = new HashMap<Character, Integer>();
+		int count = pattern.length();
+		for (int i = 0; i < pattern.length(); i++) {
+			hasmap.put(pattern.charAt(i), hasmap.getOrDefault(pattern.charAt(i), 0) + 1);
+		}
+		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		int i = 0;
+		int j = 0;
+		int d = 0;
+		while (i < ans.length()) {
+			if (hasmap.containsKey(ans.charAt(i))) {
+				map.put(ans.charAt(i), map.getOrDefault(ans.charAt(i), 0) + 1);
+				int e = hasmap.get(ans.charAt(i));
+				if (e == map.get(ans.charAt(i))) {
+					d++;
+				}
+			}
+			if (map.size() == hasmap.size() && d == count) {
+
+				int size = map.size();
+				while (map.size() == size && j < ans.length()) {
+					System.out.println(i - j + 1 + " <-size");
+					if (map.containsKey(ans.charAt(j))) {
+
+						int v = map.get(ans.charAt(j));
+						int f = hasmap.get(ans.charAt(j));
+						if (v - 1 < f) {
+							d--;
+						}
+						if (v - 1 == 0) {
+							map.remove(ans.charAt(j));
+						} else {
+							map.put(ans.charAt(j), v - 1);
+						}
+
+					}
+					j++;
+				}
+			}
+			i++;
+
+		}
+	}
+
+	static void patternmatching(String pattern, String word) {
+		int i = 0;
+		int j = 0;
+		while (i < word.length()) {
+			if (pattern.charAt(0) == word.charAt(i)) {
+				int d = i;
+				int f = 0;
+				while (f<pattern.length() && pattern.charAt(f) == word.charAt(d)) {
+					d++;
+					f++;
+				}
+				if (pattern.length() == f) {
+					System.out.println("found");
+				}
+			}
+			i++;
+		}
+	}
+
 	public static void main(String[] args) {
+		patternmatching("ABC", "AGHBCHJABCHJSAKKLSBLLLC");
 
 	}
 }
