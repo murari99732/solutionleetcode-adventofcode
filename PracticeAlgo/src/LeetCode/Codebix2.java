@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -309,7 +310,7 @@ public class Codebix2 {
 				p.remove(lsize);
 				p.add(lsize, store1);
 				p.remove(size);
-				p.add(size,store2);
+				p.add(size, store2);
 
 				size = lsize;
 				lsize = size * 2 + 1;
@@ -329,14 +330,157 @@ public class Codebix2 {
 
 	}
 
+	static void findkthalrgest(int arr[], int k) {
+		PriorityQueue<Integer> p = new PriorityQueue<Integer>();
+		int i = 0;
+		for (i = 0; i < k; i++) {
+			p.add(arr[i]);
+		}
+		for (i = k; i < arr.length; i++) {
+			if (p.peek() < arr[i]) {
+				p.poll();
+				p.add(arr[i]);
+			}
+		}
+		System.out.println(p);
+	}
+
+	static void mergenearlysorted(List<Integer> ar) {
+
+		for (int i = 1; i < ar.size(); i++) {
+			if (ar.get(i) < ar.get(i - 1)) {
+				int v = ar.get(i - 2);
+				int temp = ar.get(i);
+				ar.remove(i);
+				ar.add(i - 2, temp);
+
+			}
+
+		}
+		ar.stream().forEach(a -> System.out.print(a + " "));
+
+	}
+
+	static void printmergesorted(List<Integer> ar) {
+		PriorityQueue<Integer> pr = new PriorityQueue<Integer>();
+		for (int i = 0; i < 3; i++) {
+			pr.add(ar.get(i));
+		}
+		// System.out.println(pr);
+		int i = 3;
+		while (i < ar.size()) {
+			System.out.println(pr.peek());
+			if (pr.size() == 3) {
+				pr.poll();
+				pr.add(ar.get(i));
+			}
+			i++;
+		}
+		while (!pr.isEmpty()) {
+			System.out.println(pr.poll());
+		}
+	}
+
+	static PriorityQueue<Integer> small = new PriorityQueue<Integer>(Collections.reverseOrder());
+	static PriorityQueue<Integer> great = new PriorityQueue<Integer>();
+
+	static void pushvalue(int v) {
+		if (small.isEmpty()) {
+			small.add(v);
+		} else if (great.isEmpty()) {
+			great.add(v);
+		} else if (v <= small.peek()) {
+			small.add(v);
+			if (small.size() - great.size() > 1) {
+				int t = small.poll();
+				great.add(t);
+			}
+		} else if (v > small.peek() && v >= great.peek()) {
+			great.add(v);
+			if (great.size() - small.size() > 1) {
+				int t = great.poll();
+				small.add(t);
+			}
+		}
+
+	}
+
+	static void pollvalue() {
+		if (small.size() > 0 && great.size() == 0) {
+			System.out.println(small.poll());
+		} else if (great.size() > 0 && great.size() == 0) {
+			System.out.println(great.poll());
+		} else if (small.size() == great.size()) {
+			System.out.println(small.poll());
+		} else if (small.size() - great.size() >= 1) {
+			System.out.println(small.poll());
+		} else if (great.size() - small.size() >= 1) {
+			System.out.println(great.poll());
+		}
+	}
+
+	static void mergekpollsorted(ArrayList<ArrayList<Integer>> ar) {
+		PriorityQueue<Integer> pr = new PriorityQueue<Integer>();
+		while (ar.size()  != 0) {
+			int min = Integer.MAX_VALUE;
+			List<Integer> v = new ArrayList<Integer>();
+			boolean flag=false;
+			for (int i = 0; i < ar.size(); i++) {
+				ArrayList<Integer> br = ar.get(i);
+				if (br.size() > 0 && min > br.get(0)) {
+					min = br.get(0);
+					v = br;
+				}
+			}
+			if (ar.size() == 0) {
+				pr.add(min);
+			}
+			pr.add(min);
+			v.remove(0);
+			if(v.size()==0)
+			{
+				ar.remove(v);
+			}
+		}
+		System.out.println(pr);
+	}
+
 	public static void main(String[] args) {
-		push(1);
-		push(2);
-		push(3);
-		push(4);
-		push(5);
-		poll();
-		poll();
+		ArrayList<ArrayList<Integer>> ar = new ArrayList<>();
+
+		ArrayList<Integer> br = new ArrayList<Integer>();
+		br.add(10);
+		br.add(20);
+		br.add(30);
+		br.add(40);
+		br.add(50);
+		ar.add(br);
+		ArrayList<Integer> cr = new ArrayList<Integer>();
+		cr.add(5);
+		cr.add(7);
+		cr.add(9);
+		cr.add(11);
+		cr.add(19);
+		ar.add(cr);
+		ArrayList<Integer> dr = new ArrayList<Integer>();
+		dr.add(1);
+		dr.add(2);
+		dr.add(3);
+		dr.add(55);
+		dr.add(57);
+		ar.add(dr);
+		ArrayList<Integer> er = new ArrayList<Integer>();
+		er.add(32);
+		er.add(39);
+		ar.add(er);
+		ArrayList<Integer> fr = new ArrayList<Integer>();
+		fr.add(42);
+		fr.add(46);
+		fr.add(48);
+		fr.add(56);
+		ar.add(fr);
+
+		mergekpollsorted(ar);
 
 	}
 }
