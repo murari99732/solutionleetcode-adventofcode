@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 public class Codebix3 {
 	static class Node {
@@ -112,9 +112,7 @@ public class Codebix3 {
 			Tap t = q.poll();
 			if (map.containsKey(t.src)) {
 				q.add(new Tap(map.get(t.src), t.path + t.src + "->"));
-			}
-			else
-			{
+			} else {
 				System.out.println(t.path);
 				return;
 			}
@@ -122,16 +120,113 @@ public class Codebix3 {
 
 	}
 
-	public static void main(String[] args) {
-		HashMap<Character, Character> map = new HashMap<Character, Character>();
-		map.put('A', 'B');
-		map.put('B', 'C');
-		map.put('C', 'D');
-		map.put('D', 'E');
-		map.put('E', 'F');
-		map.put('F', 'G');
+	private static void findpossiblediv(int[] arr, int i) {
+		Set<Integer> map = new HashSet<Integer>();
+		for (int j = 0; j < arr.length; j++) {
+			int v = arr[j];
+			if (map.contains(i - v % i)) {
+				System.out.println(true);
+				return;
+			} else {
+				map.add(v % i);
+			}
 
-		finddestination(map);
+		}
+		System.out.println(false);
+
+	}
+
+	static void distinctelements(int arr[]) {
+		HashMap<Integer, Integer> set = new HashMap<>();
+		for (int i = 0; i < 3; i++) {
+			set.put(arr[i], set.getOrDefault(arr[i], 0) + 1);
+
+		}
+		int i = 4;
+		int j = 0;
+		while (i - 1 < arr.length) {
+			System.out.println(set.size());
+			set.put(arr[i], set.getOrDefault(arr[i], 0) + 1);
+			int v = set.get(arr[j]);
+			if (v - 1 == 0) {
+				set.remove(arr[j]);
+			} else {
+				set.put(arr[j], v - 1);
+
+				j++;
+
+				i++;
+			}
+
+		}
+	}
+
+	static void largestvaluewithsumzero(int arr[]) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, -1);
+		int sum = 0;
+		for (int i = 0; i < arr.length; i++) {
+			sum = sum + arr[i];
+			if (map.containsKey(sum)) {
+				int v = map.get(sum);
+				IntStream.range(v + 1, i + 1).mapToObj(a -> arr[a]).forEach(a -> System.out.print(a + "  "));
+				System.out.println();
+				map.put(sum, i);
+			} else {
+				map.put(sum, i);
+			}
+
+		}
+	}
+
+	static void minimumwindow(String word, String pattern) {
+		HashMap<Character, Integer> pat = new HashMap<>();
+		int count = 0;
+		for (int i = 0; i < pattern.length(); i++) {
+			pat.put(pattern.charAt(i), pat.getOrDefault(pattern.charAt(i), 0) + 1);
+			count++;
+		}
+		HashMap<Character, Integer> mat = new HashMap<>();
+		int i = 0;
+		int f = 0;
+		int j = 0;
+		while (i < word.length()) {
+			while (f == count) {
+
+				while (mat.size() == pat.size() || f == count) {
+
+					if (mat.containsKey(word.charAt(j))) {
+						System.out.println(word.substring(j, i + 1));
+						int val = mat.get(word.charAt(j));
+						if (val - 1 == 0) {
+							mat.remove(word.charAt(j));
+						} else {
+							mat.put(word.charAt(j), val - 1);
+						}
+						f--;
+
+					}
+					j++;
+				}
+				continue;
+			}
+			if (pat.containsKey(word.charAt(i))) {
+				mat.put(word.charAt(i), mat.getOrDefault(word.charAt(i), 0) + 1);
+				int val = pat.get(word.charAt(i));
+				int sval = mat.get(word.charAt(i));
+				if (val <= sval) {
+					f++;
+				}
+			}
+
+			i++;
+		}
+
+	}
+
+	public static void main(String[] args) {
+		minimumwindow("BDCAHGSBACDHEABCDEH", "ABC");
+
 	}
 
 }
