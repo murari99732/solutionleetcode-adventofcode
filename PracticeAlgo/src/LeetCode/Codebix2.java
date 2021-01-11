@@ -1,6 +1,7 @@
 package LeetCode;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -206,7 +207,7 @@ public class Codebix2 {
 			if (pattern.charAt(0) == word.charAt(i)) {
 				int d = i;
 				int f = 0;
-				while (f<pattern.length() && pattern.charAt(f) == word.charAt(d)) {
+				while (f < pattern.length() && pattern.charAt(f) == word.charAt(d)) {
 					d++;
 					f++;
 				}
@@ -218,8 +219,124 @@ public class Codebix2 {
 		}
 	}
 
+	static void duplicatehashmap(String a, String b) {
+		HashMap<Character, Integer> hasmap = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		for (int i = 0; i < a.length(); i++) {
+			hasmap.put(a.charAt(i), hasmap.getOrDefault(a.charAt(i), 0) + 1);
+		}
+		for (int j = 0; j < b.length(); j++) {
+
+			if (hasmap.containsKey(b.charAt(j)) && hasmap.get(b.charAt(j)) > 0) {
+				System.out.println(b.charAt(j));
+				int k = hasmap.get(b.charAt(j));
+				hasmap.put(b.charAt(j), k - 1);
+			}
+		}
+	}
+
+	static void longestsequnce(int[] a) {
+		HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+		for (int i = 0; i < a.length; i++) {
+			map.put(a[i], true);
+		}
+		for (int i = 0; i < a.length; i++) {
+			if (map.containsKey(a[i]) && map.get(a[i])) {
+				int d = 1;
+				int b = a[i] + 1;
+				int c = a[i] - 1;
+				int min = 0;
+				int max = 0;
+				map.put(a[i], false);
+				while (map.containsKey(b) && map.get(b)) {
+					d++;
+					map.put(b, false);
+					max = b;
+					b = b + 1;
+
+				}
+				while (map.containsKey(c) && map.get(c)) {
+					d++;
+					map.put(c, false);
+					min = c;
+					c = c - 1;
+
+				}
+				if (max == 0)
+					System.out.println(min + "         " + a[i] + "        " + d);
+				else if (min == 0) {
+					System.out.println(a[i] + "         " + max + "        " + d);
+				} else {
+					System.out.println(min + "         " + max + "        " + d);
+				}
+			}
+
+		}
+
+	}
+
+	static ArrayList<Integer> p = new ArrayList();
+
+	static void push(int a) {
+		p.add(a);
+		int size = p.size() - 1;
+		int val = size / 2;
+		while (val <= 0 && size != 0 && p.get(val) > p.get(size)) {
+			int temp = p.get(val);
+			int demp = p.get(size);
+			p.remove(val);
+			p.add(val, demp);
+			p.remove(size);
+			p.add(size, temp);
+			size = val;
+			val = val / 2;
+		}
+
+	}
+
+	static void poll() {
+		System.out.println(p.remove(0));
+		p.add(0, p.remove(p.size() - 1));
+		int size = 0;
+		int lsize = size * 2 + 1;
+		int rsize = size * 2 + 2;
+		while (lsize < p.size() && rsize < p.size()) {
+			int left = p.get(lsize);
+			int right = p.get(rsize);
+			if (left < p.get(size)) {
+				int store1 = p.get(size);
+				int store2 = p.get(lsize);
+				p.remove(lsize);
+				p.add(lsize, store1);
+				p.remove(size);
+				p.add(size,store2);
+
+				size = lsize;
+				lsize = size * 2 + 1;
+				rsize = size * 2 + 2;
+			} else if (right < p.get(size)) {
+				int store1 = p.get(size);
+				int store2 = p.get(rsize);
+				p.remove(rsize);
+				p.add(rsize, store1);
+				p.remove(size);
+				p.add(size, store2);
+				size = rsize;
+				lsize = size * 2 + 1;
+				rsize = size * 2 + 2;
+			}
+		}
+
+	}
+
 	public static void main(String[] args) {
-		patternmatching("ABC", "AGHBCHJABCHJSAKKLSBLLLC");
+		push(1);
+		push(2);
+		push(3);
+		push(4);
+		push(5);
+		poll();
+		poll();
 
 	}
 }
