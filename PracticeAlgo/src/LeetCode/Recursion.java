@@ -1,11 +1,14 @@
 package LeetCode;
 
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Recursion {
 
     static int j = 0;
+    static String pat[] = {"ABC", "DEF", "FGH", "IJK"};
 
     static ArrayList<Integer> decreasing(int n, ArrayList<Integer> ar) {
         if (n == 0) {
@@ -149,13 +152,168 @@ public class Recursion {
         return brr;
     }
 
+    static ArrayList<String> getsubsequnce(String a, int i) {
+        if (a.length() == i) {
+            ArrayList<String> cr = new ArrayList<>();
+            cr.add("");
+            return cr;
+        }
+        ArrayList<String> br = getsubsequnce(a, i + 1);
+        ArrayList<String> dr = new ArrayList<>();
+        for (String cb : br) {
+            dr.add(cb + a.charAt(i));
+            dr.add(cb + "");
+        }
+        return dr;
+
+    }
+
+    static ArrayList<String> getkeypad(String a, int i) {
+        if (a.length() == i) {
+            ArrayList<String> dr = new ArrayList<>();
+            dr.add("");
+            return dr;
+        }
+        ArrayList<String> temp = getkeypad(a, i + 1);
+        ArrayList<String> rt = new ArrayList<>();
+        int w = Integer.parseInt(String.valueOf(a.charAt(i)));
+        String word = pat[w];
+        for (int j = 0; j < word.length(); j++) {
+            char wd = word.charAt(j);
+            for (String it : temp) {
+                rt.add(it + wd);
+            }
+        }
+        return rt;
+    }
+
+    static ArrayList<String> stairs(int n) {
+        if (n == 0) {
+            ArrayList<String> tr = new ArrayList<>();
+            tr.add("");
+            return tr;
+        }
+
+        ArrayList<String> a = stairs(n - 1);
+        ArrayList<String> b = stairs(n - 2);
+        ArrayList<String> c = stairs(n - 3);
+        ArrayList<String> ar = new ArrayList<>();
+        for (String it : a) {
+            ar.add(it + "1");
+        }
+        for (String it : b) {
+            ar.add(it + "2");
+        }
+        for (String it : c) {
+            ar.add(it + "3");
+        }
+        return ar;
+    }
+
+    static ArrayList<String> mazepath(int m[][], int x, int y) {
+        if (x == m.length - 1 && y == m.length - 1) {
+            ArrayList<String> dr = new ArrayList<>();
+            dr.add("");
+            return dr;
+        }
+        if (x < 0 || y < 0 || x > m.length - 1 || y > m.length - 1) {
+            ArrayList<String> cr = new ArrayList<>();
+            return cr;
+        }
+        ArrayList<String> a = mazepath(m, x, y + 1);
+        ArrayList<String> b = mazepath(m, x + 1, y);
+        ArrayList<String> c = new ArrayList<>();
+        for (String it : a) {
+            c.add(it + "V");
+        }
+        for (String it : b) {
+            c.add(it + "H");
+        }
+        return c;
+
+    }
+
+    static ArrayList<String> diagonalmaze(int m[][], int x, int y) {
+        if (x < 0 || y < 0 || x > m.length || y > m.length) {
+            ArrayList<String> br = new ArrayList<>();
+            br.add("");
+            return br;
+        }
+        if (x == m.length && y == m.length) {
+            ArrayList<String> br = new ArrayList<>();
+            br.add("");
+            return br;
+        }
+        ArrayList<String> a = new ArrayList<>();
+        ArrayList<String> b = new ArrayList<>();
+        ArrayList<String> c = new ArrayList<>();
+        for (int i = x; i <= m.length; i++) {
+            a = diagonalmaze(m, i + 1, y);
+            ArrayList<String> dc = new ArrayList<>();
+            for (String it : a) {
+                dc.add(it + "H");
+            }
+
+        }
+        for (int i = y; i <= m.length; i++) {
+            b = diagonalmaze(m, x, i + 1);
+            ArrayList<String> dc = new ArrayList<>();
+            for (String it : b) {
+                dc.add(it + "V");
+            }
+            return dc;
+        }
+        for (int i = x, j = y; i <= m.length && j <= m.length; i++, j++) {
+            c = diagonalmaze(m, i + 1, j + 1);
+            ArrayList<String> dc = new ArrayList<>();
+            for (String it : c) {
+                dc.add(it + "D");
+            }
+            return dc;
+        }
+
+        return null;
+    }
+
+    static void subsequnce(String a, int i, String ans) {
+        if (i == a.length()) {
+            System.out.println(ans);
+            return;
+        }
+        subsequnce(a, i + 1, ans + a.charAt(i));
+        subsequnce(a, i + 1, ans);
+    }
+
+    static void subsequncearray(String a, int i, String arr[], int j) {
+        if (i == a.length()) {
+            Arrays.stream(arr).forEach(ab -> System.out.print(ab + " "));
+            System.out.println();
+            return;
+        }
+        int f = j;
+        arr[j] = String.valueOf(a.charAt(i));
+        subsequncearray(a, i + 1, arr, j + 1);
+
+        subsequncearray(a, i + 1, arr, j);
+    }
+
+    static void subsequncearraylist(String a, int i, ArrayList<String> arr) {
+        if (i == a.length()) {
+            arr.stream().forEach(ab -> System.out.print(ab + " "));
+            System.out.println();
+            return;
+        }
+        int f = j;
+        arr.add(String.valueOf(a.charAt(i)));
+        subsequncearraylist(a, i + 1, arr);
+        arr.remove(arr.size() - 1);
+
+        subsequncearraylist(a, i + 1, arr);
+    }
 
     public static void main(String[] args) {
-        int ab[] = new int[5];
-        int a = indexadd(new int[]{2, 3, 4, 5, 6, 4, 7, 8, 4}, 0, ab, 0);
-        Arrays.stream(ab).forEach(b -> System.out.print(b + " "));
-        System.out.println();
-        int[] indexaddpreorder = indexaddpreorder(new int[]{2, 3, 4, 5, 6, 4, 7, 8, 4}, 0, new int[5], 0);
-        Arrays.stream(indexaddpreorder).forEach(b -> System.out.print(b + " "));
+
+        subsequncearraylist("ABC", 0, new ArrayList<>());
     }
 }
+
