@@ -1,4 +1,4 @@
-package practice;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -312,8 +312,26 @@ public class DynamicProgramming19Jan {
         System.out.println(max);
     }
 
+    static  void maximumadjacent(int arr[], int idx, int val, boolean flag)
+    {
+        if(idx==arr.length)
+        {
+            System.out.println(val);
+            return;
+        }
+        if(flag==false)
+        {
+            maximumadjacent(arr,idx+1, val+arr[idx], true);
+            maximumadjacent(arr, idx+1,val,false);
+        }
+        else
+        {
+            maximumadjacent(arr,idx+1, val, false);
+        }
+    }
+
     public static void main(String[] args) {
-        adjacentelementnottaken(new int[]{2, 3, 1, 0, 1, 1});
+        maximumadjacent(new int[]{2, 3, 1, 0, 1, 1},0,0,false);
 
     }
 
