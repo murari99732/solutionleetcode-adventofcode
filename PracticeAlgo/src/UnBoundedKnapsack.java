@@ -29,7 +29,20 @@ public class UnBoundedKnapsack {
     
     return arr[numberOfWeights - 1][totalCapacity];
   }
-  
+   static void knapsack(int weight[], int idx, int profit[], int sum, int val, int dc, String ans) {
+        if (val == sum) {
+            System.out.println(ans + "                  " + val + "                " + dc);
+            return;
+        } else if (val > sum) {
+            return;
+        }
+
+        for (int i = 0; i < weight.length; i++) {
+            val = val + weight[i];
+            knapsack(weight, idx, profit, sum, val, dc + profit[i], ans + weight[i]);
+            val = val - weight[i];
+        }
+    }
   public static void main(String[] args) {
     
     int[] wt = {1, 2, 3, 5};
