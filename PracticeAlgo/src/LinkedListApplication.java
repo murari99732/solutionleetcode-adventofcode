@@ -52,9 +52,7 @@ class Linked {
     return a;
   }
 
-  /*
-   * insert method is used to insert the element in Linked List
-   */
+  
   public Node insert(int key, Node node) {
 
     if (node == null)
