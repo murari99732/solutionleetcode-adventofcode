@@ -35,7 +35,10 @@ class Linked {
       
       node = node.next;
     }
-
+       System.out.println(" even :::  ");
+      printList(evenStartingNode);
+    System.out.println(" oddd:::  ");
+    printList(oddStartingNode);
     evenEndNode.next = oddStartingNode;
     oddEndNode.next = null;
     return evenStartingNode;
