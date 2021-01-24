@@ -95,7 +95,8 @@ public class LinkedListApplication {
     System.out.println();
     
     head = a.seperateOddEven(head);
-
+      System.out.println();
+  System.out.println("Combined odd and even list");
     a.printList(head);
   }
 }
