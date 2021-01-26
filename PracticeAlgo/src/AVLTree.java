@@ -12,6 +12,7 @@ public class AVLTree {
 	static Node root;
 
 	static Node insert(int data) {
+		
 		if (root == null) {
 			return createNode(data);
 		}
