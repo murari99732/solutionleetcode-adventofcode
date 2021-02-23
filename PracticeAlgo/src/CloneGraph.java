@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
-class CloneGraph {
+class CloneGraph { 
 	static LinkedList<Integer> list[];
 
 	public CloneGraph() {
